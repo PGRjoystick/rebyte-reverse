@@ -1,0 +1,16 @@
+{
+  "name": "rebyte-reverse",
+  "version": "1.0.0",
+  "description": "A Rebyte reverse proxy API server to convert response to OpenAI API formatted response",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "body-parser": "^1.19.1",
+    "express": "^4.18.1"
+  },
+  "author": "PGRjoystick",
+  "license": "MIT"
+}
