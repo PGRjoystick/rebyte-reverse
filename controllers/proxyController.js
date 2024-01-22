@@ -7,9 +7,9 @@ const config = require('../config');
 exports.handleProxyRequest = async (req, res) => {
   try {
     const transformedRequestBody = transformRequest(req.body);
-    const response = await axios.post(config.REAL_API_URL, transformedRequestBody, {
+    const response = await axios.post(process.env.REAL_API_URL, transformedRequestBody, {
       headers: {
-        'Authorization': `Bearer ${config.REAL_API_KEY}`,
+        'Authorization': `Bearer ${process.env.REAL_API_KEY}`,
         'Content-Type': 'application/json'
       }
     });
