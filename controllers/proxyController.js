@@ -2,14 +2,17 @@ const transformRequest = require('../utils/transformRequest');
 const transformResponse = require('../utils/transformResponse');
 const axios = require('axios');
 const { brotliCompressSync } = require('zlib');
-const config = require('../config');
+
+const apiKey = process.env.REAL_API_KEY;
+const url = process.env.REAL_API_URL;
 
 exports.handleProxyRequest = async (req, res) => {
   try {
+    console.log(url);
     const transformedRequestBody = transformRequest(req.body);
-    const response = await axios.post(process.env.REAL_API_URL, transformedRequestBody, {
+    const response = await axios.post(url, transformedRequestBody, {
       headers: {
-        'Authorization': `Bearer ${process.env.REAL_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       }
     });
@@ -32,7 +35,7 @@ exports.handleProxyRequest = async (req, res) => {
        res.setHeader('Cache-Control', 'no-cache, must-revalidate');
    
     // Send the compressed response in chunks
-    const chunkSize = 1024; // Choose an appropriate chunk size
+    const chunkSize = 1024;
     for (let i = 0; i < compressedResponse.length; i += chunkSize) {
       res.write(compressedResponse.slice(i, i + chunkSize));
     }
