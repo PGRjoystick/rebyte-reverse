@@ -8,7 +8,12 @@ const url = process.env.REAL_API_URL;
 
 exports.handleProxyRequest = async (req, res) => {
   try {
-    console.log(url);
+    const apiKey = req.headers.authorization.replace('Bearer ', '');
+
+    if (!apiKey) {
+      throw new Error('API key not provided');
+    }
+
     const transformedRequestBody = transformRequest(req.body);
     const response = await axios.post(url, transformedRequestBody, {
       headers: {
@@ -22,18 +27,17 @@ exports.handleProxyRequest = async (req, res) => {
     // Compress the response using Brotli
     const compressedResponse = brotliCompressSync(transformedResponse);
 
-
     res.set({
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache',
       'Content-Encoding': 'br'
     });
 
-       // Set response headers
-       res.setHeader('Transfer-Encoding', 'chunked');
-       res.setHeader('Content-Type', 'application/json');
-       res.setHeader('Cache-Control', 'no-cache, must-revalidate');
-   
+    // Set response headers
+    res.setHeader('Transfer-Encoding', 'chunked');
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+
     // Send the compressed response in chunks
     const chunkSize = 1024;
     for (let i = 0; i < compressedResponse.length; i += chunkSize) {
@@ -43,6 +47,6 @@ exports.handleProxyRequest = async (req, res) => {
     res.end();
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.log(error)
+    console.log(error);
   }
 };
