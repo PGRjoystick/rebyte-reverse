@@ -1,6 +1,6 @@
 module.exports = (originalRequest) => {
   return {
-    version: 3,
+    version: 8,
     config: {
       "OUTPUT_STREAM": {
         "provider_id": "openai",
