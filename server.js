@@ -14,7 +14,10 @@ const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
 
 // Redirect console.log to the log file
 console.log = function (message) {
-  logStream.write(`[${new Date().toISOString()}] ${message}\n`);
+	if (typeof message === 'object') {
+		message = JSON.stringify(message);
+	}
+	logStream.write(`[${new Date().toISOString()}] ${message}\n`);
 };
 
 app.use(bodyParser.json());
@@ -23,7 +26,6 @@ app.post('/', proxyController.handleProxyRequest);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  console.log(`Logs are being written to ${logFilePath}`);
 });
 
 module.exports = app;
