@@ -15,7 +15,13 @@ module.exports = (originalRequest) => {
     },
     blocking: true,
     inputs: {
-      "messages": originalRequest.messages
+      "messages": originalRequest.messages.map(message => {
+          if (message.role === 'user' && Array.isArray(message.content)) {
+          message.parts = message.content;
+          delete message.content;
+        }
+        return message;
+      })
     }
   };
 };
