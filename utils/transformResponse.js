@@ -1,4 +1,5 @@
 module.exports = (originalResponse) => {
+  console.log(originalResponse);
   const result = originalResponse.run.results[0][0].value;
   const usage = originalResponse.run.traces[1][1][0][0].meta.usage;
   console.log(result);

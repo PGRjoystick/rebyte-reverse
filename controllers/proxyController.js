@@ -1,3 +1,4 @@
+const { response } = require('../server');
 const transformRequest = require('../utils/transformRequest');
 const transformResponse = require('../utils/transformResponse');
 const axios = require('axios');
@@ -46,7 +47,9 @@ exports.handleProxyRequest = async (req, res) => {
 
     res.end();
   } catch (error) {
-    res.status(500).json({ error: error.message });
-    console.log(error);
+      res.status(500).json({ error: error.message });
+      console.error('Error message:', error.message);
+      console.error('Stack trace:', error.stack);
+      console.log(response.data)
   }
 };
