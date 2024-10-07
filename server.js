@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Create a writable stream to a log file
-const logFilePath = path.join(__dirname, 'server.log');
+const logFilePath = path.join(__dirname, 'server2.log');
 const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
 
 // Redirect console.log to the log file

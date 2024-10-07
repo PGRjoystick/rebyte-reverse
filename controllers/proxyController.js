@@ -4,9 +4,6 @@ const transformResponse = require('../utils/transformResponse');
 const axios = require('axios');
 const { brotliCompressSync } = require('zlib');
 
-const apiKey = process.env.REAL_API_KEY;
-const url = process.env.REAL_API_URL;
-
 exports.handleProxyRequest = async (req, res) => {
   try {
     const apiKey = req.headers.authorization.replace('Bearer ', '');
@@ -14,6 +11,8 @@ exports.handleProxyRequest = async (req, res) => {
     if (!apiKey) {
       throw new Error('API key not provided');
     }
+
+    const url = req.headers.reverse_url || process.env.REAL_API_URL;
 
     const transformedRequestBody = transformRequest(req.body);
     const response = await axios.post(url, transformedRequestBody, {
@@ -47,9 +46,11 @@ exports.handleProxyRequest = async (req, res) => {
 
     res.end();
   } catch (error) {
-      res.status(500).json({ error: error.message });
-      console.error('Error message:', error.message);
-      console.error('Stack trace:', error.stack);
-      console.log(response.data)
+    res.status(500).json({ error: error.message });
+    console.error('Error message:', error.message);
+    console.error('Stack trace:', error.stack);
+    if (response && response.data) {
+      console.log(response.data);
+    }
   }
 };
