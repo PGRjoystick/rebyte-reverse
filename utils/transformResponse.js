@@ -34,7 +34,7 @@ module.exports = (originalResponse) => {
     choices: [
       {
         index: 0,
-        messages: result,
+        message: result,
         logprobs: null,
         finish_reason: "stop",
       },

@@ -47,7 +47,7 @@ exports.handleProxyRequest = async (req, res) => {
     res.end();
   } catch (error) {
     res.status(500).json({ error: error.message });
-    console.error('Error message:', error.message);
+    console.error('Error message:', error);
     console.error('Stack trace:', error.stack);
     if (response && response.data) {
       console.log(response.data);
